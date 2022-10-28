@@ -12,10 +12,12 @@ public class consolaBanco {
 		listaClientes.put("123", 42);
 		listaGestores.put("ewq", 13245);
 		
-		listaClientes.forEach((key, value) -> {
-			System.out.println("> " + key + " " + value);
-		});
+//		listaClientes.forEach((key, value) -> {
+//			System.out.println("> " + key + " " + value);
+//		});
 
+		
+		//System.out.println(getting);
 	}
 
 }

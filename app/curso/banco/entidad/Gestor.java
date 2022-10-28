@@ -1,11 +1,17 @@
 package app.curso.banco.entidad;
 
+import java.util.Random;
+import app.curso.banco.util.Utiles;
+
 public class Gestor extends Persona {
 
+	//Random idRnd = new Random();
+	
 	private int idGestor;
 	
 	public Gestor() {
-		
+		super();
+		this.idGestor = Utiles.numeroAleatorio();
 	}
 
 	public Gestor(int id, String nombre, String telefono, int idGestor) {

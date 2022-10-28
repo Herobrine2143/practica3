@@ -1,18 +1,19 @@
 package app.curso.banco.util;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Random;
-import app.curso.banco.main.TestRandom;
+//import app.curso.banco.main.TestRandom;
 
 public class Utiles {
 	
-	ArrayList<String> nombresCompletos = new ArrayList();
+	static Random intNumbers = new Random();
+	//ArrayList<String> nombresCompletos = new ArrayList();
 	
-	public static final String[] NOMBRES = { "Alvaro", "Jose", "Juan", "Pedro" };
+	public static final String[] NOMBRES = { "Alvaro", "Jose", "Juan", "Pedro", "Ana", "Sara", "Elena", "Isabel" };
 
-	public static final String[] APELLIDOS = { "Pascal", "Mareno", "Francisco", "Talo" };
+	public static final String[] APELLIDOS = { "Pascal", "Mareno", "Francisco", "Talo","Lopez", "Fatima","de la Cruz", "Martinez" };
 
-	public static String nombreAleatorio(String[] nombres, String[] apellidos) {
+	public static String nombreApellidoAleatorio(String[] nombres, String[] apellidos) {
 			
 		Random random = new Random();
 		int index2 = random.nextInt(apellidos.length);
@@ -26,7 +27,9 @@ public class Utiles {
 		
 	}
 	
-	public static String nombreAleatorio() {
+	public static String nombreApellidoAleatorio() {
+		
+		return nombreApellidoAleatorio(NOMBRES,APELLIDOS);
 		
 //		Random random = new Random();
 //		int index2 = random.nextInt(APELLIDOS.length);
@@ -36,8 +39,25 @@ public class Utiles {
 //		
 //		String nombreCompleto = (NOMBRES[index] + " " + APELLIDOS[index2]);
 		
-		return nombreAleatorio(NOMBRES,APELLIDOS);
+	}
+	
+	public static String nombreAleatorio() {
 		
+		Random random = new Random();
+		
+		int index = random.nextInt(NOMBRES.length);
+		String nombreAleatorio = NOMBRES[index];
+		
+		return nombreAleatorio;
+	}
+	
+	public static int numeroAleatorio() {
+		
+		Random numeros = new Random();
+		
+		int numeroAleatorio = numeros.nextInt(500);
+		
+		return numeroAleatorio;
 	}
 	
 }

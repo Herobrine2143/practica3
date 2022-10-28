@@ -1,14 +1,28 @@
 package app.curso.banco.entidad;
 
+import java.util.Random;
+import app.curso.banco.util.Utiles;
+
 public class Persona {
+	
+	Random random = new Random();
+	
+	//public int idRnd = random.nextInt(100);
+	public String nombreAleatorio = Utiles.nombreAleatorio();
 	protected int id;
 	protected String nombre;
 	protected String telefono;
 
 	public Persona() {
-		this.id = 0000;
-		this.nombre = "null";
+		this.id = Utiles.numeroAleatorio();
+		this.nombre = nombreAleatorio;
 		this.telefono = "000 000 000";
+	}
+	
+	public Persona(String telefono) {
+		this.id = Utiles.numeroAleatorio();
+		this.nombre = nombreAleatorio;
+		this.telefono = telefono;
 	}
 	
 	// Constructor parametizado
