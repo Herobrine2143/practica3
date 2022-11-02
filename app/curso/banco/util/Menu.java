@@ -12,6 +12,7 @@ public class Menu {
 	public static void main(String[] args) {
 		
 		//Quitamos Usuario de Persona y en Login solo utilizamos contraseña, Cliente ClienteParLOgin = clientes.get(idCliente) boolean loginCorrecto = clienteparaLogin.getPassword().equals(pass)
+		//en el numero 19 creamos una opcion para registro una variable int y haciendo un setPassowrd
 
 		HashMap<String, Integer> listaGestores = new HashMap<>();
 
@@ -123,7 +124,7 @@ public class Menu {
 				System.out.println("\nOpcion no existente...");
 				break;
 			}
-			if (numero != 19) {
+			if (numero != 20) {
 				System.out.println("1. Inserción de un gestor.\r\n"
 						+ "2. Inserción masiva de gestores con datos aleatorios.\r\n" + "3. Obtención de un gestor.\r\n"
 						+ "4. Obtención de todos los gestores.\r\n" + "5. Actualización de un gestor.\r\n"
