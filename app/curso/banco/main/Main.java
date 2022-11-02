@@ -2,25 +2,32 @@ package app.curso.banco.main;
 
 import java.util.HashMap;
 
-import app.curso.banco.entidad.* ;
+import app.curso.banco.entidad.*;
+import app.curso.banco.util.Utiles;
 //import app.curso.banco.entidad.Gestor;
 
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 		Cliente c1 = new Cliente(1, "Ana Martinez", "78465433");
-		
+
 		c1.abrirCuenta("ES123", 100f);
+
+		c1.mostrarCuenta();
+
+		Gestor g2 = new Gestor(45, "Carla", "654 874 751", 99);
+
+		// c2.setId(3);
+
+		g2.mostrarInfo();
+
+		//Transferencia t1 = new Transferencia(4, Mensaje.TIPO_CLIENTE, c1.getId(),Mensaje.TIPO_GESTOR,g2.getId(),100);
+		
+		System.out.println();
 		
 		c1.mostrarCuenta();
-		
-		Gestor c2 = new Gestor(45,"Carla","654 874 751",99);
-		
-		//c2.setId(3);
-		
-		c2.mostrarInfo();
-		
+
 //		Cliente c1 = new Cliente(1, "Alvaro", "648 485 124", 0);
 //
 //		c1.mostrarInfo();
@@ -59,6 +66,9 @@ public class Main {
 //		
 //		g1.mostrarInfo();
 
+		Mensaje m2 = new Mensaje(1, Mensaje.TIPO_CLIENTE, 2, Mensaje.TIPO_GESTOR, 5, "Hello");
+
+		System.out.println("\nMensaje: " + m2);
 	}
 
 }

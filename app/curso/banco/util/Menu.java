@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class Menu {
 	public static void main(String[] args) {
+		
+		//Quitamos Usuario de Persona y en Login solo utilizamos contraseña, Cliente ClienteParLOgin = clientes.get(idCliente) boolean loginCorrecto = clienteparaLogin.getPassword().equals(pass)
 
 		HashMap<String, Integer> listaGestores = new HashMap<>();
 
@@ -46,9 +48,11 @@ public class Menu {
 
 				System.out.print("Cantidad de Gestores aleatorios que quieres crear: ");
 				int cantidad = keyboard.nextInt();
-				for (int i = 0; i < cantidad; ++i) {
+				System.out.println(cantidad);
+				for (int i = 0; i < cantidad; i++) {
 					nombre = Utiles.nombreAleatorio();
 					id = Utiles.numeroAleatorio();
+					System.out.println(id);
 					listaGestores.put(nombre, id);
 				}
 

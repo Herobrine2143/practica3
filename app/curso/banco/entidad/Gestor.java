@@ -29,7 +29,7 @@ public class Gestor extends Persona {
 	
 	public void mostrarInfo() {
 		super.mostrarInfo();
-		System.out.println("ID Gestor: " + this.idGestor);
+		System.out.println("ID Gestor: " + this.idGestor + "\n\n-------");
 	}
 
 }

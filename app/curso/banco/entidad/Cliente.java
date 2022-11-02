@@ -25,6 +25,12 @@ public class Cliente extends Persona {
 		this.totalDinero = 0;
 		this.cuentas = new HashMap<>();
 	}
+	
+	public Cliente(int id) {
+		super(id);
+		this.totalDinero = 0;
+		this.cuentas = new HashMap<>();
+	}
 
 	public Cliente(int id, String nombre, String telefono, float totalDinero) {
 		super(id, nombre, telefono);
@@ -77,7 +83,7 @@ public class Cliente extends Persona {
 	public float ingresarDinero(String idCuenta, Float dinero) {
 		Float dineroEnCuenta = this.cuentas.get(idCuenta);
 		if (this.cuentas.get(idCuenta) != null) {
-			this.cuentas.put(idCuenta, dineroEnCuenta + dinero);
+			this.cuentas.put(idCuenta, (dineroEnCuenta + dinero));
 			ingresarDinero(dinero);
 		} else {
 			System.out.println("Cuenta no existe");
