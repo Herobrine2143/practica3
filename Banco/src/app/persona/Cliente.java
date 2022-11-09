@@ -15,14 +15,19 @@ public class Cliente extends Persona {
 	
 	public Cliente() {
 		super();
-		this.idGestor = Generador.numeroAleatorio();
-		this.saldo = Generador.numeroDecimalAleatorio();
+		this.idGestor = Generador.numeroAleatorio(900);
+		this.saldo = Generador.floatEntre(200.99f,20.1f);
 	}
 	
+	public Cliente(int idGestor) {
+		super();
+		this.idGestor = idGestor;
+		this.saldo = Generador.floatEntre(200.99f, 20.1f);
+	}
 	public void mostrarInfo() {
 		super.mostrarInfo();
 		System.out.println("ID del Gestor: " + this.idGestor + "\nSaldo: " + this.saldo);
-		System.out.println("\n--------");
+		System.out.println("\n...");
 	}
 
 	public int getIdGestor() {

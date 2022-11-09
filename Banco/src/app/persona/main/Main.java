@@ -9,10 +9,11 @@ public class Main {
 
 		Cliente c1 = new Cliente();
 		c1.mostrarInfo();
+		String v = c1.getPassword();
+		System.out.println(v);
 		
-		String x = Generador.nombreApellidoAleatorio();
+		int x = Generador.numeroAleatorio(100);
 		System.out.println(x);
-
 	}
 
 }

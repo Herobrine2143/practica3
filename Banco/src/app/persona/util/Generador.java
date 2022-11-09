@@ -21,9 +21,6 @@ public class Generador {
 
 	public static final String[] TIPO_CORREO = { "hotmail.com", "gmail.com", "yahoo.com" };
 
-//	public static float MIN = 500;
-//	public static float MAX = 10000;
-
 	public static String nombreApellidoAleatorio(String[] nombres, String[] apellidos) {
 
 		Random random = new Random();
@@ -76,20 +73,27 @@ public class Generador {
 		return nombreAleatorio;
 	}
 
-	public static int numeroAleatorio() {
+	public static int numeroAleatorio(int x) {
 
 		Random numeros = new Random();
 
-		int numeroAleatorio = numeros.nextInt(500);
+		int numeroAleatorio = numeros.nextInt(x);
 
 		return numeroAleatorio;
 	}
+	
+	public static int intEntre(int max, int min) {
+		
+		int x = (int) (Math.random() * (max - min + 1) + min);
+		
+		return x;
+	}
 
-	public static float numeroDecimalAleatorio() {
+	public static float floatEntre(float max, float min) {
 
 //		Random numero = new Random();
 
-		float x = (float) Math.random() * (700f - 200f + 1) + 500f;
+		float x = (float) Math.random() * (max - min + 1) + min;
 
 		return x;
 
