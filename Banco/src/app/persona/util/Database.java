@@ -1,6 +1,8 @@
 package app.persona.util;
 
 import java.sql.Connection;
+
+import app.persona.util.DatabaseConnection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,7 @@ public class Database {
 	private Connection conexion;
 
 	public Database() {
-
+//		this.conexion = new DatabaseConnection().getConnection();
 		try {
 			conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/banco", "Banco", "");
 
@@ -117,7 +119,7 @@ public class Database {
 
 		Statement instruccion = null;
 		try {
-			instruccion = conexion.createStatement(); 
+			instruccion = conexion.createStatement();
 			ResultSet resultados = instruccion.executeQuery("SELECT * FROM gestor WHERE 1");
 
 			while (resultados.next()) {
@@ -248,7 +250,8 @@ public class Database {
 
 			ps.setString(4, cliente.getCorreo());
 
-			ps.setFloat(5, cliente.getSaldo());
+			//cambiado a double, antes estaba en float
+			ps.setDouble(5, cliente.getSaldo());
 
 			ps.executeUpdate();
 
@@ -270,7 +273,7 @@ public class Database {
 		return false;
 	}
 
-	public ArrayList<Cliente> getClientes() {
+	public ArrayList<Cliente> getClientes(boolean print) {
 
 		Statement instruccion = null;
 
@@ -291,14 +294,15 @@ public class Database {
 				int idGestor = resultados.getInt("id_gestor");
 				float saldo = resultados.getFloat("saldo");
 
+				if (print == true) {
 				System.out.println("ID Cliente: " + id);
 				System.out.println("ID de su Gestor: " + idGestor);
 				System.out.println("Usuario: " + usuario);
 				System.out.println("Contraseña: " + password);
 				System.out.println("Correo: " + correo);
 				System.out.println("Saldo: " + saldo + " €");
-				System.out.println("\n-----------\n");
-
+				System.out.println("\n...\n");
+				}
 				Cliente cliente = new Cliente(id, usuario, password, correo, idGestor, saldo);
 				// Gestor gestor = new Gestor(usuario, correo);
 				clientes.add(cliente);
@@ -326,7 +330,7 @@ public class Database {
 
 		Statement instruccion = null;
 		try {
-			instruccion = conexion.createStatement(); 
+			instruccion = conexion.createStatement();
 			ResultSet resultados = instruccion.executeQuery("SELECT * FROM cliente WHERE 1");
 
 			while (resultados.next()) {
@@ -353,17 +357,25 @@ public class Database {
 		return null;
 	}
 	
-	public boolean saldoCliente(float saldo, int id) {
+	public Cliente getClientes(int id) {
 		
-		Statement instruccion = null;
+		PreparedStatement instruccion = null;
+		Cliente cliente = null;
 		try {
-			PreparedStatement ps = conexion.prepareStatement("UPDATE cliente SET saldo = ? WHERE cliente.id = ?");
-			ps.setFloat(1, saldo);
-			ps.setInt(2, id);
-			
-			ps.executeUpdate();
-			
-			return true;
+			String query = "SELECT * FROM gestor WHERE id = ?";
+			instruccion = conexion.prepareStatement(query);
+			instruccion.setInt(1, id);
+
+			ResultSet resultados = instruccion.executeQuery();
+
+			if (resultados.next()) {
+				cliente = new Cliente();
+				cliente.setId(resultados.getInt("id"));
+				cliente.setUsuario(resultados.getString("usuario"));
+				cliente.setPassword(resultados.getString("password"));
+				cliente.setCorreo(resultados.getString("correo"));
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -375,8 +387,58 @@ public class Database {
 				}
 			}
 		}
-		return false;
+		return cliente;
 	}
+
+//	public String getSaldoCliente(int id1) {
+//		
+//		Statement instruccion = null;
+//		try {
+//			PreparedStatement ps = conexion.prepareStatement("SELECT `saldo` FROM `cliente` WHERE `id` = (?)");
+//			ps.setInt(1, id1);
+//			ResultSet resultados = ps.executeQuery();
+//
+//			while (resultados.next()) {
+//				System.out.println(resultados.getFloat("saldo"));
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (instruccion != null) {
+//				try {
+//					instruccion.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return null;
+//	}
+
+//	public boolean saldoCliente(float saldo, int id) {
+//
+//		Statement instruccion = null;
+//		try {
+//			PreparedStatement ps = conexion.prepareStatement("UPDATE cliente SET saldo = ? WHERE cliente.id = ?");
+//			ps.setFloat(1, saldo);
+//			ps.setInt(2, id);
+//
+//			ps.executeUpdate();
+//
+//			return true;
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (instruccion != null) {
+//				try {
+//					instruccion.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 	public boolean actualizarClientes(Cliente cliente) {
 
@@ -409,7 +471,7 @@ public class Database {
 	public boolean borrarCliente(int id) {
 
 		PreparedStatement instruccion = null;
-		
+
 		try {
 			String query = "DELETE FROM cliente WHERE id = ?";
 			instruccion = conexion.prepareStatement(query);
@@ -417,10 +479,10 @@ public class Database {
 			int filasEliminadas = instruccion.executeUpdate();
 
 			return filasEliminadas != 0;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally {
 			if (instruccion != null) {
 				try {
@@ -432,44 +494,45 @@ public class Database {
 		}
 		return false;
 	}
-	
+
 	public boolean enviarMensaje(Mensaje mensaje) {
-		
+
 		PreparedStatement instruccion = null;
-		
+
 		try {
-		PreparedStatement ps = conexion.prepareStatement("INSERT INTO mensaje (id_origen, id_destino, texto, fecha) VALUES (?,?,?,?)");
-		ps.setInt(1, mensaje.getIdOrigen());
-		ps.setInt(2, mensaje.getIdDestino());
-		ps.setString(3, mensaje.getTexto());
-		ps.setTimestamp(4, mensaje.getFecha());
-		
-		ps.executeUpdate();
-				
-		return true;
-		
+			PreparedStatement ps = conexion
+					.prepareStatement("INSERT INTO mensaje (id_origen, id_destino, texto, fecha) VALUES (?,?,?,?)");
+			ps.setInt(1, mensaje.getIdOrigen());
+			ps.setInt(2, mensaje.getIdDestino());
+			ps.setString(3, mensaje.getTexto());
+			ps.setTimestamp(4, mensaje.getFecha());
+
+			ps.executeUpdate();
+
+			return true;
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		} finally {
 			if (instruccion != null) {
 				try {
 					instruccion.close();
-					
+
 				} catch (SQLException e) {
 					e.printStackTrace();
-					
+
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	public String mostrarMensajes() {
-		
+
 		Statement instruccion = null;
 		try {
-			instruccion = conexion.createStatement(); 
+			instruccion = conexion.createStatement();
 			ResultSet resultados = instruccion.executeQuery("SELECT * FROM mensaje WHERE 1");
 
 			while (resultados.next()) {
@@ -494,11 +557,11 @@ public class Database {
 		}
 		return null;
 	}
-	
-	public boolean enviarTransferencia(Transferencia transferencia) {
-		
-		Statement instruccion = null;
 
+	public boolean enviarTransferencia(Transferencia transferencia) {
+
+		Statement instruccion = null;
+		
 		try {
 
 			// instruccion = conexion.createStatement();
@@ -517,10 +580,13 @@ public class Database {
 			ps.setTimestamp(5, transferencia.getFecha());
 
 			ps.executeUpdate();
+
 			
-			//coje el numero de la transferencia de la base de datos, restala con el saldo del cliente.
-			//El total sera la cantidad restante de saldo del cliente.
-			//Para el beneficiario solo sumalo.
+
+			// coje el numero de la transferencia de la base de datos, restala con el saldo
+			// del cliente.
+			// El total sera la cantidad restante de saldo del cliente.
+			// Para el beneficiario solo sumalo.
 
 			return true;
 
@@ -537,12 +603,12 @@ public class Database {
 		}
 		return false;
 	}
-	
+
 	public String mostrarTransferencias() {
-		
+
 		Statement instruccion = null;
 		try {
-			instruccion = conexion.createStatement(); 
+			instruccion = conexion.createStatement();
 			ResultSet resultados = instruccion.executeQuery("SELECT * FROM transferencia WHERE 1");
 
 			while (resultados.next()) {
@@ -568,5 +634,76 @@ public class Database {
 		}
 		return null;
 	}
+	
+	public boolean restaTransferencia(boolean done, double saldo, int id) {
+		if (done == true) {
+			PreparedStatement instruccion = null;
+			try {
+				PreparedStatement ps = conexion.prepareStatement("UPDATE cliente SET saldo = ? WHERE cliente.id = ?");
+				ps.setDouble(1, saldo);
+				ps.setInt(2, id);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (instruccion != null) {
+					try {
+						instruccion.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean sumaTransferencia(boolean done, double saldo, int id) {
+		
+		if (done == true) {
+			PreparedStatement instruccion = null;
+			try {
+				PreparedStatement ps = conexion.prepareStatement("UPDATE cliente SET saldo = ? = WHERE cliente.id = ?");
+				ps.setDouble(1, saldo);
+				ps.setInt(1, id);
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (instruccion != null) {
+					try {
+						instruccion.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+//	public double getTransferencia(int id) {
+//		double importe;
+//		Statement instruccion = null;
+//		try {
+//			instruccion = conexion.createStatement();
+//			ResultSet resultados = instruccion.executeQuery("SELECT importe FROM transferencia WHERE id = ?");
+//			
+//			while (resultados.next()) {
+//				importe = resultados.getDouble("importe");
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (instruccion != null) {
+//				try {
+//					instruccion.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return importe;
+//	}
 
 }

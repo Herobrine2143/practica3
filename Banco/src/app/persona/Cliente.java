@@ -5,7 +5,8 @@ import app.persona.util.Generador;
 public class Cliente extends Persona {
 	
 	private int idGestor;
-	private float saldo;
+	// saldo estaba en float. Cambiado a double
+	private double saldo;
 
 	public Cliente(int id, String usuario, String password, String correo, int idGestor, float saldo) {
 		super(id, usuario, password, correo);
@@ -29,6 +30,10 @@ public class Cliente extends Persona {
 		System.out.println("ID del Gestor: " + this.idGestor + "\nSaldo: " + this.saldo);
 		System.out.println("\n...");
 	}
+	
+	public void restarSaldo(float saldo) {
+		this.saldo -= saldo;
+	}
 
 	public int getIdGestor() {
 		return idGestor;
@@ -38,7 +43,7 @@ public class Cliente extends Persona {
 		this.idGestor = idGestor;
 	}
 
-	public float getSaldo() {
+	public double getSaldo() {
 		return saldo;
 	}
 

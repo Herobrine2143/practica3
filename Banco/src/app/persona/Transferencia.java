@@ -3,6 +3,8 @@ package app.persona;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import app.persona.Cliente;
+
 public class Transferencia {
 	private int idOrdenante;
 	private int idBeneficiario;
@@ -16,6 +18,7 @@ public class Transferencia {
 		this.importe = importe;
 		this.concepto = concepto;
 		this.fecha = new Timestamp(new Date().getTime());
+		
 	}
 	
 	public void mostrarTransferencias() {

@@ -22,4 +22,32 @@ public class Prestamo {
 		System.out.println("Comision: " + this.comision);
 		System.out.println("Meses: " + this.meses);
 	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public double getComision() {
+		return comision;
+	}
+	public void setComision(double comision) {
+		this.comision = comision;
+	}
+	public int getMeses() {
+		return meses;
+	}
+	public void setMeses(int meses) {
+		this.meses = meses;
+	}
 }
