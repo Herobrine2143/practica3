@@ -1,37 +1,37 @@
 package app.persona.main;
 
+import app.movimiento.Transferencia;
 import app.persona.Cliente;
-import app.persona.Transferencia;
 import app.persona.util.Database;
-import java.util.ArrayList;
 
 public class TransferenciaMain {
 
 	public static void main(String[] args) {
+
 		Database database = new Database();
-		ArrayList<Cliente> getClientes = new ArrayList<>();
+
+		System.out.println("Antes de la transferencia: \n");
+		database.mostrarClientes();
 		
-		//System.out.println(z);
-		
-		//database.getClientes(true);
-		double z = Double.valueOf(database.getClientes(false).get(1).getSaldo());
-		double y = Double.valueOf(database.getClientes(false).get(2).getSaldo());
-		Transferencia transferencia = new Transferencia(4,1,40d,"De prueba");
-		database.enviarTransferencia(transferencia);
-		double x = (z - transferencia.getImporte());
-		double f = (y + transferencia.getImporte());
-		
-		//System.out.println("restante: " + x);
-		
-		database.restaTransferencia(database.enviarTransferencia(transferencia),x, 4);
-		
-		database.sumaTransferencia(database.enviarTransferencia(transferencia), f, 1);
-	
-		database.getClientes(false).forEach((cliente) -> {
-			System.out.println(cliente.getSaldo());
-		});
-		
-		
+		// Crea una nueva transferencia
+		Transferencia transferencia = new Transferencia(4, 1, 250d, "From Toby to Stelea");
+
+		boolean e = database.enviarTransferencia(transferencia);
+
+		Cliente cliente = database.getClientes(transferencia.getIdOrdenante());
+
+		double x = (cliente.getSaldo() - transferencia.getImporte());
+
+		Cliente cliente1 = database.getClientes(transferencia.getIdBeneficiario());
+
+		double y = (cliente1.getSaldo() + transferencia.getImporte());
+
+		database.restaTransferencia(e, x, 4);
+		database.sumaTransferencia(e, y, 1);
+
+		System.out.println("Despues de la transferencia: \n");
+		database.mostrarClientes();
+
 	}
 
 }

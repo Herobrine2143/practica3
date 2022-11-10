@@ -17,20 +17,29 @@ public class Persona {
 		this.password = password;
 		this.correo = correo;
 	}
-	
+
 	public Persona(String usuario, String password, String correo) {
 		this.usuario = usuario;
 		this.password = password;
 		this.correo = correo;
 	}
-	
+
 	public Persona(String usuario, String correo) {
 		this.usuario = usuario;
 		this.correo = correo;
 	}
+	
+	public Persona(String usuario) {
+		this.usuario = usuario;
+	}
+	
+	public Persona(int id, String usuario) {
+		this.id = id;
+		this.usuario = usuario;
+	}
 
 	public Persona() {
-		this.id = Generador.numeroAleatorio(900);
+		this.id = Generador.numeroAleatorio(20);
 		this.usuario = Generador.nombreAleatorio();
 		this.password = Generador.nombreAleatorio() + Generador.numeroAleatorio(5000000);
 		this.correo = Generador.correoElectronico();
@@ -67,7 +76,7 @@ public class Persona {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getCorreo() {
 		return correo;
 	}
